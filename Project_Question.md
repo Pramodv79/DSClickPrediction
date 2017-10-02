@@ -1,4 +1,4 @@
-###Project Question###
+#Project Question#
 
 **What question are you trying to solve**
 
@@ -11,12 +11,15 @@
 **What data you will use ?**
 
   Outbrain's two weeks of data from 14-Jun-2016 and 28-jun-2016 provided on kaggle. This is a very large relational set ( 2B rows and 100GB uncompressed). If the large amount of data is unmanageable the data size may be reduced  1/10th so the project could be completed in the given timeframe.
-  Link to acquire the data: <https://www.kaggle.com/c/outbrain-click-prediction/data>
+  Link to acquire the data: <https://www.kaggle.com/c/outbrain-click-prediction/data>.  
 
 **How the model would be evaluated ?**
 
-  The prediction of the models would be evaluated on test data according to the Mean Average Precision @12  (MAP@12):
-MAP@12=1|U|∑u=1|U|∑k=1min(12,n)P(k) where |U| is the number of display_ids, P(k) is the precision at cutoff k, n is the number of predicted ad_ids.   
+  The prediction of the models would be evaluated on test data according to the Mean Average Precision @12  
+  
+  (MAP@12): MAP@12=1|U|∑u=1|U|∑k=1min(12,n)P(k). 
+
+  where |U| is the number of display_ids, P(k) is the precision at cutoff k, n is the number of predicted ad_ids.   
 
 **What is the timeframe**
 
