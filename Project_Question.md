@@ -1,4 +1,5 @@
-#Project Question#
+
+# Project Question #
 
 **What question are you trying to solve**
 
@@ -17,14 +18,15 @@
 **How the model would be evaluated ?**
 
   The prediction of the models would be evaluated on test data according to the Mean Average Precision @12 (MAP@12): 
-  ![alt text](https://github.com/Pramodv79/DSClickPrediction/images/MeanAveragePrecision12.png "Mean Average Precision @12")
+  
+  ![alt text](images/MeanAveragePrecision12.png  "Mean Average Precision @12"). 
  
   where |U| is the number of display_ids, P(k) is the precision at cutoff k, n is the number of predicted ad_ids.   
 
-**What is the timeframe**
+**What is the timeframe?**
 
   Plan is to complete the project by 8 Nov' 17 before peer review.
   
-**Why do I want to answer this question**
+**Why do I want to answer this question?**
   
-  I recently took a role which involved leveraging datascience to develop models for targeted advertisement. It does involve working with large amount of dataset and predicting click through rate. Given the domain is directly applicable to my job I am very interested to solve this and apply learnings to my work. Given the size of data it would require data wrangling, feature engineering and model building skills which I am interested to develop my expertise on.
+  I am very interested in learning more about targeted online advertisement and is directly applicable to the domain I work in. It involves working with large amount of dataset and predicting click through rate. Given the domain is directly applicable to my job I am very interested to solve this and apply learnings to my work. THe size of the data would also pose interesting challenges and would would require data wrangling, feature engineering and model building skills which I am interested to develop my expertise on.
