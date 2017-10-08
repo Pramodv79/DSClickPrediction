@@ -29,4 +29,4 @@
   
 **Why do I want to answer this question?**
   
-  I am very interested in learning more about targeted online advertisement and is directly applicable to the domain I work in. It involves working with large amount of dataset and predicting click through rate. Given the domain is directly applicable to my job I am very interested to solve this and apply learnings to my work. THe size of the data would also pose interesting challenges and would would require data wrangling, feature engineering and model building skills which I am interested to develop my expertise on.
+  I am very interested in learning more about targeted online advertisement. It involves working with large amount of dataset and predicting click through rate of ads presented to the user thus providing a better experience. Given the domain is directly applicable to my job I am very interested to solve this and apply learnings to my work. The size of the data would also pose interesting challenges and would require data wrangling, feature engineering and model building skills which I am interested to develop my expertise on.
