@@ -7,7 +7,7 @@
 
 **What additional information you would like to learn ?**
 
-  What are the significant significant features that drive the likely hood of user clicking the recommended content indicating association?
+  What are the significant features that drive the likely hood of user clicking the recommended content indicating association?
 
 **What data you will use ?**
 
