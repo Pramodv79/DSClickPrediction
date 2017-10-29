@@ -1,0 +1,108 @@
+SQL Commands for a database
+#clicks_train: Create Table Syntax
+CREATE TABLE clicks_train(
+   display_id     bigint,
+   ad_id          bigint,
+   clicked        smallint
+);
+
+#Copy data from a file to a table
+COPY clicks_train FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/CapstoneProj/data/clicks_train.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+#Create clicks_test table
+CREATE TABLE clicks_test(
+   display_id     bigint,
+   ad_id          bigint
+);
+#clicks_test: Copy data from a file to a table
+COPY clicks_test FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/clicks_test.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+#events: Create Table
+#CREATED A VARCHAR for platform BCOZ PYTHON SHOWED STRINGS AND NULL
+CREATE TABLE events(
+   display_id        bigint,
+   uuid              varchar(200),
+   document_id       bigint,
+   timestamp         bigint,   
+   platform          varchar(10), 
+   geo_location      varchar(200)
+);
+
+COPY events FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/events.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+
+#documents_meta
+#how to handle timezones ?
+CREATE TABLE documents_meta(
+   display_id 		     bigint,
+   source_id		     bigint,
+   publisher_id		  bigint,
+   publish_time		  timestamp   
+);
+
+COPY documents_meta FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/documents_meta.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+#documents_topics
+CREATE TABLE documents_topics(
+   document_id 	     bigint,
+   topic_id			     smallint,
+   confidence_level	  double precision
+);
+
+COPY documents_topics FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/documents_topics.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+#documents_categories
+CREATE TABLE documents_categories(
+   document_id 	     bigint,
+   category_id		     smallint,
+   confidence_level	  double precision
+);
+COPY documents_categories FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/documents_categories.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+#documents_entities
+CREATE TABLE documents_entities(
+   document_id 	     bigint,
+   entity_id		     varchar(200),
+   confidence_level	  double precision
+);
+COPY documents_entities FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/documents_entities.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+#promoted_content
+#should campaign_id be small_int ?
+CREATE TABLE promoted_content(
+   ad_id			     bigint,
+   document_id 	  bigint,
+   campaign_id		  bigint,
+   advertiser_id    smallint
+);
+COPY promoted_content FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/promoted_content.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+#page_views_sample
+CREATE TABLE page_views_sample(
+   uuid			     varchar(200),
+   document_id 	  bigint,
+   timestamp        bigint,   
+   platform 		  smallint,
+   geo_location 	  varchar(200),
+   traffic_source	  smallint
+);
+COPY page_views_sample FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/page_views_sample.csv.zip' WITH CSV HEADER DELIMITER AS ',';
+
+COPY page_views_sample FROM '/Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/page_views_sample_fixed.csv' WITH CSV HEADER DELIMITER AS ',';
+
+=============All the tables=======
+
+clicks_test.csv.zip
+clicks_train.csv.zip
+
+events.csv.zip
+
+documents_meta.csv.zip		
+documents_topics.csv.zip
+documents_categories.csv.zip
+documents_entities.csv.zip
+
+promoted_content.csv.zip
+
+page_views_sample.csv.zip
+sample_submission.csv.zip

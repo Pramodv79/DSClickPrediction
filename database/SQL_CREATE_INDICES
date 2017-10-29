@@ -1,0 +1,16 @@
+CREATE INDEX display_id_idx ON events (display_id);  — done
+CREATE INDEX uuid_idx ON events (uuid);	— done
+CREATE INDEX document_id_idx ON events (document_id); — done
+
+CREATE INDEX  ON page_views_sample (uuid); — done
+CREATE INDEX ON page_views_sample (document_id);  —done
+
+CREATE INDEX ON clicks_train (display_id); — done
+
+CREATE INDEX ON documents_meta (document_id);  — done
+CREATE INDEX ON documents_entities (document_id); — done
+CREATE INDEX ON documents_categories (document_id); — done
+CREATE INDEX ON documents_topics (document_id); — done
+
+CREATE INDEX ON promoted_content (document_id); — done
+CREATE INDEX ON promoted_content (ad_id);  — done

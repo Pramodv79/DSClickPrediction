@@ -1,0 +1,7 @@
+select * from clicks_train where display_id = 1;
+select * from events where display_id =1;
+select * from promoted_content where ad_id in ( 42337, 139684, 144739, 156824, 279295, 296965);
+select * from documents_meta where document_id = 379743;
+select * from documents_entities where document_id = 379743;
+select * from documents_categories where document_id = 379743;
+select * from documents_topics where document_id = 379743;
