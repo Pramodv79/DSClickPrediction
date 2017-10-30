@@ -1,0 +1,56 @@
+select * from clicks_train where display_id = 1;
+select * from events where display_id =1;
+select * from promoted_content where ad_id in ( 42337, 139684, 144739, 156824, 279295, 296965);
+select * from documents_meta where document_id = 379743;
+select * from documents_entities where document_id = 379743;
+select * from documents_categories where document_id = 379743;
+select * from documents_topics where document_id = 379743;
+-------------------------------------------------------------
+
+select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count(*) as row_cnt from clicks_train;
+ display_id_cnt.  | ad_id_cnt  | row_cnt  
+------------------+------------+----------
+       16,874,593 |    478,950 | 87,141,731
+
+select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count(*) as row_cnt from clicks_test;
+ display_id_cnt | ad_id_cnt | row_cnt  
+----------------+-----------+----------
+      6,245,533 |   381,385 | 32,225,162
+
+select count(distinct document_id) as document_id_cnt, count(distinct display_id) as display_id_cnt,count(*) as row_cnt from events;
+ document_id_cnt  |  display_id_cnt   |  row_cnt   
+--------+----------+----------
+ 894,060 		  | 23,120,126 		  | 23,120,126
+(1 row)
+
+                                                         
+select count( distinct document_id) as document_id_cnt, count( distinct ad_id) as ad_id_cnt, count( distinct campaign_id) as campaign_id_cnt, count( distinct advertiser_id) as advertiser_id_cnt, count(*) as row_cnt from promoted_content;
+ document_id_cnt | ad_id_cnt | campaign_id_cnt | advertiser_id_cnt | row_cnt 
+-----------------+-----------+-----------------+-------------------+---------
+         185,709 |   559,583 |          34,675 |             4,385 |  559,583
+
+------------------------------------------------------------------
+-- CROSS CHECK: if we are getting the same counts after the join  --
+------------------------------------------------------------------
+select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count( distinct ad_document_id) as ad_document_id_cnt, count(*) as row_cnt from clicks_train_fact;
+ display_id_cnt | ad_id_cnt | ad_document_id_cnt | row_cnt  
+----------------+-----------+--------------------+----------
+     16,874,593 |   478,950 |            164,476 | 87,141,731
+
+select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count( distinct ad_document_id) as ad_document_id_cnt, count(*) as row_cnt from clicks_test_fact;
+ display_id_cnt | ad_id_cnt | ad_document_id_cnt | row_cnt  
+----------------+-----------+--------------------+----------
+      6,245,533 |   381,385 |            132,067 | 32,225,162
+
+------------------------------------------------------------
+-- Check if display ID has been clicked more than once --
+------------------------------------------------------------
+SELECT display_id, count(*) 
+FROM clicks_train
+WHERE clicked = 1
+GROUP BY display_id
+HAVING count(*) >1;
+
+display_id | count 
+------------+-------
+(0 rows)

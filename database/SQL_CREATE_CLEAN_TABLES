@@ -1,0 +1,178 @@
+----------------------------------------------
+##Create document meta tables with top categories 
+##Topics, entities
+----------------------------------------------
+#Create *_top table to hold only top categories
+SELECT document_id, category_id, confidence_level INTO documents_categories_top
+FROM
+ (
+    SELECT *, ROW_NUMBER () OVER ( 
+    PARTITION BY document_id
+    ORDER BY confidence_level DESC)
+    FROM
+    documents_categories
+   -- WHERE document_id = 379743
+ ) x
+WHERE
+ROW_NUMBER =1;
+
+#Create Index on document_id
+CREATE INDEX ON documents_categories_top (document_id);
+
+#Check to see if we have one row per document_id
+select count(distinct document_id), count(*) from documents_categories_top;
+
+----------------------------------------------
+#Create *_top table to hold only top categories
+SELECT document_id, entity_id, confidence_level INTO documents_entities_top
+FROM
+ (
+    SELECT *, ROW_NUMBER () OVER ( 
+    PARTITION BY document_id
+    ORDER BY confidence_level DESC)
+    FROM
+    documents_entities
+   -- WHERE document_id = 379743
+ ) x
+WHERE
+ROW_NUMBER =1;
+
+#Create Index on document_id
+CREATE INDEX ON documents_entities_top (document_id);
+
+#Check to see if we have one row per document_id
+select count(distinct document_id), count(*) from documents_entities_top;
+
+----------------------------------------------
+#Create *_top table to hold only top categories
+SELECT document_id, topic_id, confidence_level INTO documents_topics_top
+FROM
+ (
+    SELECT *, ROW_NUMBER () OVER ( 
+    PARTITION BY document_id
+    ORDER BY confidence_level DESC)
+    FROM
+    documents_topics
+   -- WHERE document_id = 379743
+ ) x
+WHERE
+ROW_NUMBER =1;
+
+#Create Index on document_id
+CREATE INDEX ON documents_topics_top (document_id);
+
+#Check to see if we have one row per document_id
+select count(distinct document_id), count(*) from documents_topics_top;
+
+----------------------------------------------
+#Create FACT_TABLE for clicks_train joining events, 
+#documents_meta, documents_topics,documents_categories, 
+#documents_entities
+----------------------------------------------
+--Sample query to test join--
+SELECT ct.display_id, ct.ad_id, ct.clicked, e.uuid, e.document_id, e.timestamp, e.platform, e.geo_location, 
+    dm.source_id, dm.publisher_id, dm.publish_time,
+    dc.category_id,
+    de.entity_id,
+    dt.topic_id,
+    pc.document_id as ad_document_id,
+    pc.campaign_id as ad_campaign_id,
+    pc.advertiser_id as ad_advertiser_id
+FROM clicks_train as ct, 
+    events e, 
+    documents_meta dm, 
+    documents_categories_top dc, 
+    documents_entities_top de, 
+    documents_topics_top dt, 
+    promoted_content pc 
+WHERE ct.display_id = e.display_id
+AND e.document_id = dm.document_id
+AND e.document_id = dc.document_id
+AND e.document_id = de.document_id
+AND e.document_id = dt.document_id
+AND ct.ad_id = pc.ad_id
+LIMIT 10;
+
+--Create complete table --
+--DROP TABLE IF EXISTS clicks_train_fact;
+CREATE TABLE clicks_train_fact AS
+SELECT ct.display_id, ct.ad_id, ct.clicked, e.uuid, e.document_id, e.timestamp, e.platform, e.geo_location, 
+    dm.source_id, dm.publisher_id, dm.publish_time,
+    dc.category_id as dc_category_id_1,
+    de.entity_id as de_entity_id_1 ,
+    dt.topic_id as dt_topic_id_1,
+    pc.document_id as ad_document_id,
+    pc.campaign_id as ad_campaign_id,
+    pc.advertiser_id as ad_advertiser_id
+FROM clicks_train ct 
+LEFT OUTER JOIN events e
+  ON ct.display_id = e.display_id
+LEFT OUTER JOIN documents_meta dm
+  ON e.document_id = dm.document_id
+LEFT OUTER JOIN documents_categories_top dc
+  ON e.document_id = dc.document_id
+LEFT OUTER JOIN  documents_entities_top de
+  ON e.document_id = de.document_id
+LEFT OUTER JOIN documents_topics_top dt
+  ON e.document_id = dt.document_id   
+LEFT OUTER JOIN promoted_content pc 
+  ON ct.ad_id = pc.ad_id;
+
+#Create Index on display_id, ad_id, ad_document_id
+CREATE INDEX ON clicks_train_fact (display_id);
+CREATE INDEX ON clicks_train_fact (ad_id);
+CREATE INDEX ON clicks_train_fact (ad_document_id);
+
+#Copy data out for H20 and it needs headers
+COPY clicks_train_fact TO '/Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction_DATA/data/clicks_train_fact.csv' DELIMITER ',' CSV HEADER;
+#gzip the file
+gzip /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction_DATA/data/clicks_train_fact.csv
+
+#Create table with 1MM rows as sample to test the model
+CREATE TABLE clicks_train_fact_limit AS
+SELECT * 
+FROM clicks_train_fact
+LIMIT 1000000;
+
+#Copy data out for H20 and it needs headers
+COPY clicks_train_fact_limit TO '/Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction_DATA/data/clicks_train_fact_limit.csv' DELIMITER ',' CSV HEADER;
+#gzip the file
+gzip /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction_DATA/data/clicks_train_fact_limit.csv
+
+----------------------------------------------
+--CREATE clicks_test_fact table ---
+----------------------------------------------
+--DROP TABLE IF EXISTS clicks_test_fact;
+CREATE TABLE clicks_test_fact AS
+SELECT ct.display_id, ct.ad_id, e.uuid, e.document_id, e.timestamp, e.platform, e.geo_location, 
+    dm.source_id, dm.publisher_id, dm.publish_time,
+    dc.category_id as dc_category_id_1,
+    de.entity_id as de_entity_id_1 ,
+    dt.topic_id as dt_topic_id_1,
+    pc.document_id as ad_document_id,
+    pc.campaign_id as ad_campaign_id,
+    pc.advertiser_id as ad_advertiser_id
+FROM clicks_test ct 
+LEFT OUTER JOIN events e
+  ON ct.display_id = e.display_id
+LEFT OUTER JOIN documents_meta dm
+  ON e.document_id = dm.document_id
+LEFT OUTER JOIN documents_categories_top dc
+  ON e.document_id = dc.document_id
+LEFT OUTER JOIN  documents_entities_top de
+  ON e.document_id = de.document_id
+LEFT OUTER JOIN documents_topics_top dt
+  ON e.document_id = dt.document_id   
+LEFT OUTER JOIN promoted_content pc 
+  ON ct.ad_id = pc.ad_id;
+
+
+#Create Index on display_id, ad_id, ad_document_id
+CREATE INDEX ON clicks_test_fact (display_id);
+CREATE INDEX ON clicks_test_fact (ad_id);
+CREATE INDEX ON clicks_test_fact (ad_document_id);
+
+#Copy data out for H20 and it needs headers
+COPY clicks_test_fact TO '/Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction_DATA/data/clicks_test_fact.csv' DELIMITER ',' CSV HEADER;
+#gzip the file
+gzip /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction_DATA/data/clicks_test_fact.csv

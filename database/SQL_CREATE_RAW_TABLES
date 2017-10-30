@@ -89,6 +89,31 @@ CREATE TABLE page_views_sample(
 COPY page_views_sample FROM PROGRAM 'unzip -p /Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/page_views_sample.csv.zip' WITH CSV HEADER DELIMITER AS ',';
 
 COPY page_views_sample FROM '/Users/vapramod/Documents/PersonalWork/GA_DataScienceWork/DSClickPrediction/data/page_views_sample_fixed.csv' WITH CSV HEADER DELIMITER AS ',';
+------------------------------------------------------------------
+# Create Index on raw Tables
+------------------------------------------------------------------
+
+CREATE INDEX display_id_idx ON events (display_id);
+CREATE INDEX uuid_idx ON events (uuid);
+CREATE INDEX document_id_idx ON events (document_id);
+
+CREATE INDEX ON page_views_sample (uuid);
+CREATE INDEX ON page_views_sample (document_id);
+
+CREATE INDEX ON clicks_train (display_id);
+CREATE INDEX ON clicks_train (ad_id);
+CREATE INDEX ON clicks_train (clicked);
+
+CREATE INDEX ON clicks_test (display_id);
+CREATE INDEX ON clicks_test (ad_id);
+
+CREATE INDEX ON documents_meta (document_id);
+CREATE INDEX ON documents_entities (document_id);
+CREATE INDEX ON documents_categories (document_id);
+CREATE INDEX ON documents_topics (document_id);
+
+CREATE INDEX ON promoted_content (document_id);
+CREATE INDEX ON promoted_content (ad_id);
 
 =============All the tables=======
 
