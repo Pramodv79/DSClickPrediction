@@ -42,6 +42,15 @@ select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as 
 ----------------+-----------+--------------------+----------
       6,245,533 |   381,385 |            132,067 | 32,225,162
 
+------------------------------------------------------------------
+-- check data size for the sample limit table--
+------------------------------------------------------------------
+ select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count( distinct ad_document_id) as ad_document_id_cnt, count(*) as row_cnt from clicks_train_fact_limit;
+ 
+  display_id_cnt | ad_id_cnt | ad_document_id_cnt | row_cnt 
+----------------+-----------+--------------------+---------
+         198201 |     86189 |              40348 | 1000000
+
 ------------------------------------------------------------
 -- Check if display ID has been clicked more than once --
 ------------------------------------------------------------
