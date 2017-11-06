@@ -1,0 +1,45 @@
+#Standard invocation of H2O
+--java -jar h2o.jar
+#Path where h2o exists ver = 3.14.0.7
+/Applications/anaconda/lib/python3.6/site-packages/h2o/backend/bin/h2o.jar
+
+#Start h20 using command line and keeping sql driver in path
+java -cp /Users/vapramod/Documents/PersonalWork/drivers/postgresql-42.1.4.jar:/Applications/anaconda/lib/python3.6/site-packages/h2o/backend/bin/h2o.jar water.H2OApp
+
+#Launch H2O from browser
+http://192.168.1.2:54321
+#Flow dir: where H20 flow notebooks are saved
+'/Users/vapramod/h2oflows'
+
+#Common H2o API
+
+h2o.get_frame
+h2o.get_model
+h2o.get_grid
+h2o.ls()
+h2o.remove(fr) 
+---------------------
+
+#Connection url for local database
+jdbc:postgresql://localhost:5432/vapramod
+
+#Path or jdbc driver
+--/Users/vapramod/Documents/PersonalWork/drivers/postgresql-42.1.4.jar
+
+
+#Copy data out from SQL TABLE for H20 and it needs headers
+COPY products_273 TO '/tmp/products_199.csv' DELIMITER ',' CSV HEADER;
+
+-----
+Install H2o module for python
+186590defb29:~ vapramod$ pip install http://h2o-release.s3.amazonaws.com/h2o/rel-weierstrass/7/Python/h2o-3.14.0.7-py2.py3-none-any.whl
+Collecting h2o==3.14.0.7 from http://h2o-release.s3.amazonaws.com/h2o/rel-weierstrass/7/Python/h2o-3.14.0.7-py2.py3-none-any.whl
+  Downloading http://h2o-release.s3.amazonaws.com/h2o/rel-weierstrass/7/Python/h2o-3.14.0.7-py2.py3-none-any.whl (83.3MB)
+    100% |████████████████████████████████| 83.3MB 3.6MB/s 
+Requirement already satisfied: colorama>=0.3.8 in /Applications/anaconda/lib/python3.6/site-packages (from h2o==3.14.0.7)
+Requirement already satisfied: future in /Applications/anaconda/lib/python3.6/site-packages (from h2o==3.14.0.7)
+Requirement already satisfied: tabulate in /Applications/anaconda/lib/python3.6/site-packages (from h2o==3.14.0.7)
+Requirement already satisfied: requests in /Applications/anaconda/lib/python3.6/site-packages (from h2o==3.14.0.7)
+Installing collected packages: h2o
+Successfully installed h2o-3.14.0.7
+----------
