@@ -1,3 +1,10 @@
+#---------------------------------------------------------------#
+###READ ME FIRST: ###
+#This file contains sql used to validate each step of the  table creation
+#It also provides cardinality of each data set
+#---------------------------------------------------------------#
+###STEP1: Understand rows across all tables for a given display_is to understand the association across all data set###
+
 select * from clicks_train where display_id = 1;
 select * from events where display_id =1;
 select * from promoted_content where ad_id in ( 42337, 139684, 144739, 156824, 279295, 296965);
@@ -6,6 +13,7 @@ select * from documents_entities where document_id = 379743;
 select * from documents_categories where document_id = 379743;
 select * from documents_topics where document_id = 379743;
 -------------------------------------------------------------
+###STEP2: Get unique counts for important columns###
 
 select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count(*) as row_cnt from clicks_train;
  display_id_cnt.  | ad_id_cnt  | row_cnt  
@@ -29,9 +37,9 @@ select count( distinct document_id) as document_id_cnt, count( distinct ad_id) a
 -----------------+-----------+-----------------+-------------------+---------
          185,709 |   559,583 |          34,675 |             4,385 |  559,583
 
-------------------------------------------------------------------
--- CROSS CHECK: if we are getting the same counts after the join  --
-------------------------------------------------------------------
+#-------------------------------------------------------------------------#
+###STEP3: CROSS CHECK: if we are getting the same counts after the join ###
+#-------------------------------------------------------------------------#
 select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count( distinct ad_document_id) as ad_document_id_cnt, count(*) as row_cnt from clicks_train_fact;
  display_id_cnt | ad_id_cnt | ad_document_id_cnt | row_cnt  
 ----------------+-----------+--------------------+----------
@@ -42,18 +50,18 @@ select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as 
 ----------------+-----------+--------------------+----------
       6,245,533 |   381,385 |            132,067 | 32,225,162
 
-------------------------------------------------------------------
--- check data size for the sample limit table--
-------------------------------------------------------------------
+#-------------------------------------------------------------------------#
+###STEP4: check data size for the sample limit table ###
+#-------------------------------------------------------------------------#
  select count( distinct display_id) as display_id_cnt, count( distinct ad_id) as ad_id_cnt, count( distinct ad_document_id) as ad_document_id_cnt, count(*) as row_cnt from clicks_train_fact_limit;
  
   display_id_cnt | ad_id_cnt | ad_document_id_cnt | row_cnt 
 ----------------+-----------+--------------------+---------
          198201 |     86189 |              40348 | 1000000
 
-------------------------------------------------------------
+#-------------------------------------------------------------------------#
 -- Check if display ID has been clicked more than once --
-------------------------------------------------------------
+#-------------------------------------------------------------------------#
 SELECT display_id, count(*) 
 FROM clicks_train
 WHERE clicked = 1
